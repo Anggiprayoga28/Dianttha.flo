@@ -716,7 +716,7 @@ const HomePage = ({ onPageChange }) => {
               <h3 className="text-2xl font-bold text-gray-800 mb-3">Pelanggan Puas</h3>
               <p className="text-gray-600 mb-4">Rating kepuasan tinggi dari ratusan pelanggan setia</p>
               <div className="text-3xl font-bold text-pink-500">
-                <AnimatedCounter end={4.9} />
+                <AnimatedCounter end={5} />
               </div>
               <div className="text-sm text-gray-500">Rating Bintang</div>
             </div>
@@ -1450,7 +1450,7 @@ const App = () => {
       />
       
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-pink-600 to-pink-700 text-white py-12">
+      <footer className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -1536,7 +1536,7 @@ const App = () => {
             </div>
           </div>
           
-          <div className="border-t border-pink-500 mt-8 pt-8 text-center">
+          <div className="border-t border-pink-300 mt-8 pt-8 text-center">
             <p className="text-pink-200">
               &copy; 2024 Dianttha.flo. Semua hak cipta dilindungi.
             </p>

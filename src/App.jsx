@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Heart, Star, Plus, Minus, Search, Filter, Phone, Mail, MapPin, Clock, Award, Users, Truck, Shield } from 'lucide-react';
+import { ShoppingCart, Heart, Star, Plus, Minus, Search, Filter, Phone, Mail, MapPin, Clock, Award, Users, Truck, Shield, Sparkles } from 'lucide-react';
 
 // Mock Database
 const mockProducts = [
@@ -85,21 +85,74 @@ const mockProducts = [
   }
 ];
 
+// Floating Petals Animation Component
+const FloatingPetals = () => {
+  const petals = Array.from({ length: 8 }, (_, i) => i);
+  
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {petals.map((petal) => (
+        <div
+          key={petal}
+          className="absolute animate-bounce"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+            animationDuration: `${3 + Math.random() * 2}s`
+          }}
+        >
+          <div className="w-4 h-4 bg-pink-300 rounded-full opacity-60 animate-pulse"></div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Animated Counter Component
+const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTime = null;
+    let animationFrame;
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      
+      setCount(Math.floor(progress * end));
+      
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration]);
+
+  return <span>{count}{suffix}</span>;
+};
+
 // Header Component
 const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
   return (
-    <header className="bg-white shadow-lg sticky top-0 z-50">
+    <header className="bg-white shadow-lg sticky top-0 z-50 border-b-2 border-pink-100">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onPageChange('home')}>
-              <img 
-                src="/src/assets/logo.jpeg" 
-                alt="Dianttha.flo Logo" 
-                className="w-10 h-10 rounded-full object-cover"
-              />
+            <div className="flex items-center space-x-3 cursor-pointer group" onClick={() => onPageChange('home')}>
+              <div className="relative">
+                <img 
+                  src="/src/assets/logo.jpeg" 
+                  alt="Dianttha.flo Logo" 
+                  className="w-10 h-10 rounded-full object-cover transition-transform group-hover:scale-110"
+                />
+                <div className="absolute inset-0 rounded-full bg-pink-200 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+              </div>
               <div>
-                <h1 className="text-2xl font-bold text-blue-400">Dianttha.flo</h1>
+                <h1 className="text-2xl font-bold text-pink-500 group-hover:text-pink-600 transition-colors">Dianttha.flo</h1>
                 <span className="text-gray-600 text-sm">Papan Bunga Akrilik</span>
               </div>
             </div>
@@ -108,25 +161,41 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
           <nav className="hidden md:flex space-x-6">
             <button 
               onClick={() => onPageChange('home')}
-              className={`transition ${currentPage === 'home' ? 'text-blue-400 font-semibold' : 'text-gray-600 hover:text-blue-400'}`}
+              className={`transition-all duration-300 hover:scale-105 ${
+                currentPage === 'home' 
+                  ? 'text-pink-500 font-semibold border-b-2 border-pink-300' 
+                  : 'text-gray-600 hover:text-pink-500'
+              }`}
             >
               Home
             </button>
             <button 
               onClick={() => onPageChange('products')}
-              className={`transition ${currentPage === 'products' ? 'text-blue-400 font-semibold' : 'text-gray-600 hover:text-blue-400'}`}
+              className={`transition-all duration-300 hover:scale-105 ${
+                currentPage === 'products' 
+                  ? 'text-pink-500 font-semibold border-b-2 border-pink-300' 
+                  : 'text-gray-600 hover:text-pink-500'
+              }`}
             >
               Produk
             </button>
             <button 
               onClick={() => onPageChange('about')}
-              className={`transition ${currentPage === 'about' ? 'text-blue-400 font-semibold' : 'text-gray-600 hover:text-blue-400'}`}
+              className={`transition-all duration-300 hover:scale-105 ${
+                currentPage === 'about' 
+                  ? 'text-pink-500 font-semibold border-b-2 border-pink-300' 
+                  : 'text-gray-600 hover:text-pink-500'
+              }`}
             >
               Tentang
             </button>
             <button 
               onClick={() => onPageChange('contact')}
-              className={`transition ${currentPage === 'contact' ? 'text-blue-400 font-semibold' : 'text-gray-600 hover:text-blue-400'}`}
+              className={`transition-all duration-300 hover:scale-105 ${
+                currentPage === 'contact' 
+                  ? 'text-pink-500 font-semibold border-b-2 border-pink-300' 
+                  : 'text-gray-600 hover:text-pink-500'
+              }`}
             >
               Kontak
             </button>
@@ -134,12 +203,12 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
           
           <button 
             onClick={onCartToggle}
-            className="relative bg-blue-400 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-600 transition"
+            className="relative bg-gradient-to-r from-pink-400 to-pink-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:from-pink-500 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <ShoppingCart className="w-5 h-5" />
             <span>Keranjang</span>
             {cartItems.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs animate-pulse">
                 {cartItems.length}
               </span>
             )}
@@ -159,26 +228,26 @@ const SearchFilter = ({ searchTerm, onSearchChange, selectedCategory, onCategory
   ];
 
   return (
-    <div className="bg-gray-50 py-6">
+    <div className="bg-pink-50 py-6">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-pink-400 w-5 h-5" />
             <input
               type="text"
               placeholder="Cari papan bunga..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
             />
           </div>
           
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-pink-400 w-5 h-5" />
             <select
               value={selectedCategory}
               onChange={(e) => onCategoryChange(e.target.value)}
-              className="pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent bg-white"
+              className="pl-10 pr-8 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent bg-white"
             >
               {categories.map(category => (
                 <option key={category.value} value={category.value}>
@@ -203,29 +272,31 @@ const ProductCard = ({ product, onAddToCart, onToggleFavorite, isFavorite }) => 
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border border-pink-100">
       <div className="relative">
         <img 
           src={product.image} 
           alt={product.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover transition-transform duration-500 hover:scale-110"
         />
         <button
           onClick={() => onToggleFavorite(product.id)}
-          className={`absolute top-3 right-3 p-2 rounded-full ${
-            isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-400 hover:text-red-500'
-          } transition-all`}
+          className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
+            isFavorite 
+              ? 'bg-pink-500 text-white shadow-lg' 
+              : 'bg-white text-pink-400 hover:text-pink-500 hover:bg-pink-50'
+          }`}
         >
           <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
         </button>
         
-        <div className="absolute bottom-3 left-3 bg-blue-400 text-white px-2 py-1 rounded-full text-xs">
+        <div className="absolute bottom-3 left-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
           {product.category.replace('-', ' ').toUpperCase()}
         </div>
       </div>
       
       <div className="p-4">
-        <h3 className="font-bold text-lg text-gray-800 mb-2">{product.name}</h3>
+        <h3 className="font-bold text-lg text-gray-800 mb-2 hover:text-pink-600 transition-colors">{product.name}</h3>
         <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
         
         <div className="flex items-center mb-3">
@@ -233,7 +304,7 @@ const ProductCard = ({ product, onAddToCart, onToggleFavorite, isFavorite }) => 
             {[...Array(5)].map((_, i) => (
               <Star 
                 key={i} 
-                className={`w-4 h-4 ${
+                className={`w-4 h-4 transition-colors ${
                   i < Math.floor(product.rating) 
                     ? 'text-yellow-400 fill-current' 
                     : 'text-gray-300'
@@ -247,12 +318,12 @@ const ProductCard = ({ product, onAddToCart, onToggleFavorite, isFavorite }) => 
         </div>
         
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-blue-400">
+          <span className="text-2xl font-bold text-pink-500">
             {formatPrice(product.price)}
           </span>
           <button
             onClick={() => onAddToCart(product)}
-            className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center space-x-2"
+            className="bg-gradient-to-r from-pink-400 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 flex items-center space-x-2 transform hover:scale-105 shadow-md hover:shadow-lg"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah</span>
@@ -348,13 +419,13 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
-      <div className="bg-white w-full max-w-md h-full overflow-y-auto">
-        <div className="p-4 border-b">
+      <div className="bg-white w-full max-w-md h-full overflow-y-auto border-l-4 border-pink-300">
+        <div className="p-4 border-b bg-gradient-to-r from-pink-50 to-pink-100">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">Keranjang Belanja</h2>
+            <h2 className="text-xl font-bold text-pink-600">Keranjang Belanja</h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className="text-pink-500 hover:text-pink-700 text-2xl transition-colors"
             >
               ×
             </button>
@@ -363,39 +434,44 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
         
         <div className="p-4">
           {cartItems.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">Keranjang masih kosong</p>
+            <div className="text-center py-8">
+              <div className="text-pink-300 mb-4">
+                <ShoppingCart className="w-16 h-16 mx-auto" />
+              </div>
+              <p className="text-gray-500">Keranjang masih kosong</p>
+            </div>
           ) : (
             <>
               {!showCheckoutForm ? (
                 <>
                   {cartItems.map(item => (
-                    <div key={item.id} className="flex items-center space-x-3 mb-4 pb-4 border-b">
+                    <div key={item.id} className="flex items-center space-x-3 mb-4 pb-4 border-b border-pink-100">
                       <img 
                         src={item.image} 
                         alt={item.name}
-                        className="w-16 h-16 object-cover rounded-lg"
+                        className="w-16 h-16 object-cover rounded-lg border border-pink-200"
                       />
                       <div className="flex-1">
                         <h4 className="font-medium text-sm">{item.name}</h4>
-                        <p className="text-blue-400 font-bold">{formatPrice(item.price)}</p>
+                        <p className="text-pink-500 font-bold">{formatPrice(item.price)}</p>
                         
                         <div className="flex items-center space-x-2 mt-2">
                           <button
                             onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-                            className="bg-gray-200 p-1 rounded"
+                            className="bg-pink-100 p-1 rounded hover:bg-pink-200 transition-colors"
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-3 h-3 text-pink-600" />
                           </button>
-                          <span className="px-2">{item.quantity}</span>
+                          <span className="px-2 font-semibold">{item.quantity}</span>
                           <button
                             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                            className="bg-gray-200 p-1 rounded"
+                            className="bg-pink-100 p-1 rounded hover:bg-pink-200 transition-colors"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-3 h-3 text-pink-600" />
                           </button>
                           <button
                             onClick={() => onRemoveItem(item.id)}
-                            className="text-red-500 text-sm ml-2"
+                            className="text-red-500 text-sm ml-2 hover:text-red-700 transition-colors"
                           >
                             Hapus
                           </button>
@@ -404,17 +480,17 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                     </div>
                   ))}
                   
-                  <div className="pt-4 border-t">
+                  <div className="pt-4 border-t border-pink-100">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-lg font-bold">Total:</span>
-                      <span className="text-2xl font-bold text-blue-400">
+                      <span className="text-2xl font-bold text-pink-500">
                         {formatPrice(totalPrice)}
                       </span>
                     </div>
                     
                     <button 
                       onClick={() => setShowCheckoutForm(true)}
-                      className="w-full bg-blue-400 text-white py-3 rounded-lg hover:bg-blue-500 transition"
+                      className="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
                     >
                       Lanjut ke Checkout
                     </button>
@@ -423,10 +499,10 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold">Data Pemesanan</h3>
+                    <h3 className="text-lg font-bold text-pink-600">Data Pemesanan</h3>
                     <button
                       onClick={() => setShowCheckoutForm(false)}
-                      className="text-blue-400 text-sm"
+                      className="text-pink-500 text-sm hover:text-pink-700 transition-colors"
                     >
                       Kembali
                     </button>
@@ -441,7 +517,7 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                       name="name"
                       value={customerInfo.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                      className="w-full px-3 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300"
                       placeholder="Masukkan nama lengkap"
                       required
                     />
@@ -456,7 +532,7 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                       name="email"
                       value={customerInfo.email}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                      className="w-full px-3 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300"
                       placeholder="contoh@email.com"
                     />
                   </div>
@@ -470,7 +546,7 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                       name="phone"
                       value={customerInfo.phone}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                      className="w-full px-3 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300"
                       placeholder="08123456789"
                       required
                     />
@@ -484,7 +560,7 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                       name="address"
                       value={customerInfo.address}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                      className="w-full px-3 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300"
                       placeholder="Alamat lengkap untuk pengiriman"
                       rows={3}
                     />
@@ -498,24 +574,24 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                       name="notes"
                       value={customerInfo.notes}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                      className="w-full px-3 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300"
                       placeholder="Catatan khusus untuk pesanan"
                       rows={2}
                     />
                   </div>
 
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <h4 className="font-semibold mb-2">Ringkasan Pesanan:</h4>
+                  <div className="bg-pink-50 p-3 rounded-lg border border-pink-200">
+                    <h4 className="font-semibold mb-2 text-pink-700">Ringkasan Pesanan:</h4>
                     {cartItems.map(item => (
                       <div key={item.id} className="flex justify-between text-sm mb-1">
                         <span>{item.name} ({item.quantity}x)</span>
                         <span>{formatPrice(item.price * item.quantity)}</span>
                       </div>
                     ))}
-                    <div className="border-t pt-2 mt-2 font-bold">
+                    <div className="border-t border-pink-200 pt-2 mt-2 font-bold">
                       <div className="flex justify-between">
                         <span>Total:</span>
-                        <span className="text-blue-400">{formatPrice(totalPrice)}</span>
+                        <span className="text-pink-500">{formatPrice(totalPrice)}</span>
                       </div>
                     </div>
                   </div>
@@ -538,61 +614,85 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
   );
 };
 
-// New Home Page Component - Landing Style
+// New Home Page Component - Landing Style with Animations
 const HomePage = ({ onPageChange }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
     <>
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-blue-400 via-blue-500 to-blue-800 text-white overflow-hidden min-h-screen">
+      {/* Hero Section with Animations */}
+      <div className="relative bg-gradient-to-br from-pink-200 via-pink-300 to-pink-500 text-white overflow-hidden min-h-screen">
+        <FloatingPetals />
         <div className="absolute inset-0 bg-black/10"></div>
+        
+        {/* Animated Background Elements */}
+        <div className="absolute top-10 left-10 w-20 h-20 bg-pink-400 rounded-full opacity-30 animate-bounce" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-20 right-16 w-16 h-16 bg-pink-300 rounded-full opacity-40 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 left-20 w-12 h-12 bg-white rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+        
         <div className="relative container mx-auto px-4 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[70vh]">
-            <div className="space-y-8">
+            <div className={`space-y-8 transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}`}>
               <div className="space-y-6">
                 <h1 className="text-6xl lg:text-7xl font-bold leading-tight">
-                  Papan Bunga
-                  <span className="block text-yellow-300 text-5xl lg:text-6xl">Elegan & Berkelas</span>
+                  <span className="inline-block animate-pulse">Papan Bunga</span>
+                  <span className="block text-pink-100 text-5xl lg:text-6xl animate-bounce" style={{ animationDelay: '0.5s' }}>
+                    Elegan & Berkelas
+                  </span>
                 </h1>
-                <p className="text-xl lg:text-2xl text-blue-100 leading-relaxed">
+                <p className="text-xl lg:text-2xl text-pink-50 leading-relaxed animate-fade-in-up" style={{ animationDelay: '1s' }}>
                   Menciptakan momen tak terlupakan dengan papan bunga premium yang dibuat khusus untuk setiap perayaan istimewa Anda.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-6">
                 <button 
                   onClick={() => onPageChange('products')}
-                  className="bg-white text-blue-600 px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+                  className="bg-white text-pink-600 px-10 py-5 rounded-xl font-bold text-lg hover:bg-pink-50 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl animate-bounce-in"
+                  style={{ animationDelay: '1.5s' }}
                 >
+                  <Sparkles className="w-6 h-6 inline mr-3" />
                   Jelajahi Koleksi
                 </button>
                 <button 
                   onClick={() => onPageChange('contact')}
-                  className="bg-transparent border-3 border-white text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-white hover:text-blue-600 transition-all"
+                  className="bg-transparent border-3 border-white text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-white hover:text-pink-600 transition-all animate-slide-in-right"
+                  style={{ animationDelay: '2s' }}
                 >
+                  <Phone className="w-6 h-6 inline mr-3" />
                   Konsultasi Gratis
                 </button>
               </div>
             </div>
             
-            <div className="relative flex justify-center">
+            <div className={`relative flex justify-center transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
               <div className="relative">
-                <div className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg rounded-full p-12 border border-white/30">
+                <div className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-lg rounded-full p-12 border border-white/30 animate-float">
                   <div className="text-center space-y-6">
                     <div className="flex justify-center">
-                      <img 
-                        src="/src/assets/logo.jpeg" 
-                        alt="Dianttha.flo Logo" 
-                        className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-2xl"
-                      />
+                      <div className="relative">
+                        <img 
+                          src="/src/assets/logo.jpeg" 
+                          alt="Dianttha.flo Logo" 
+                          className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-2xl transition-transform hover:scale-110"
+                        />
+                        <div className="absolute inset-0 rounded-full bg-pink-300 opacity-20 animate-ping"></div>
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="text-4xl font-bold">250+</div>
-                      <div className="text-blue-100 text-lg">Papan Bunga Terjual</div>
+                      <div className="text-4xl font-bold">
+                        <AnimatedCounter end={250} suffix="+" />
+                      </div>
+                      <div className="text-pink-50 text-lg">Papan Bunga Terjual</div>
                     </div>
                   </div>
                 </div>
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-yellow-300 rounded-full animate-pulse"></div>
-                <div className="absolute -bottom-6 -left-6 w-6 h-6 bg-pink-300 rounded-full animate-bounce"></div>
-                <div className="absolute top-1/2 -right-8 w-4 h-4 bg-green-300 rounded-full animate-ping"></div>
+                <div className="absolute -top-4 -right-4 w-8 h-8 bg-pink-200 rounded-full animate-bounce"></div>
+                <div className="absolute -bottom-6 -left-6 w-6 h-6 bg-white rounded-full animate-pulse"></div>
+                <div className="absolute top-1/2 -right-8 w-4 h-4 bg-pink-100 rounded-full animate-ping"></div>
               </div>
             </div>
           </div>
@@ -600,56 +700,194 @@ const HomePage = ({ onPageChange }) => {
       </div>
 
       {/* Trust Indicators */}
-      <div className="bg-white py-20">
+      <div className="bg-white py-20 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-200 via-pink-300 to-pink-400"></div>
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Mengapa Memilih Dianttha.flo?</h2>
-            <p className="text-xl text-gray-600">Kepercayaan pelanggan adalah prioritas utama kami</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4 animate-fade-in-up">Mengapa Memilih Dianttha.flo?</h2>
+            <p className="text-xl text-gray-600 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>Kepercayaan pelanggan adalah prioritas utama kami</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-              <div className="bg-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-pink-200 animate-slide-in-up">
+              <div className="bg-gradient-to-r from-pink-400 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce">
                 <Award className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-3">Pelanggan Puas</h3>
               <p className="text-gray-600 mb-4">Rating kepuasan tinggi dari ratusan pelanggan setia</p>
-              <div className="text-3xl font-bold text-orange-500">4.9</div>
+              <div className="text-3xl font-bold text-pink-500">
+                <AnimatedCounter end={4.9} />
+              </div>
               <div className="text-sm text-gray-500">Rating Bintang</div>
+            </div>
+
+            <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-pink-200 animate-slide-in-up" style={{ animationDelay: '0.2s' }}>
+              <div className="bg-gradient-to-r from-pink-400 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce" style={{ animationDelay: '0.5s' }}>
+                <Users className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Pelanggan Setia</h3>
+              <p className="text-gray-600 mb-4">Klien yang terus mempercayai layanan kami</p>
+              <div className="text-3xl font-bold text-pink-500">
+                <AnimatedCounter end={500} suffix="+" />
+              </div>
+              <div className="text-sm text-gray-500">Pelanggan</div>
+            </div>
+
+            <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-pink-200 animate-slide-in-up" style={{ animationDelay: '0.4s' }}>
+              <div className="bg-gradient-to-r from-pink-400 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce" style={{ animationDelay: '1s' }}>
+                <Truck className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Pengiriman Tepat</h3>
+              <p className="text-gray-600 mb-4">Selalu tepat waktu untuk acara penting Anda</p>
+              <div className="text-3xl font-bold text-pink-500">99%</div>
+              <div className="text-sm text-gray-500">Ketepatan Waktu</div>
+            </div>
+
+            <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-pink-200 animate-slide-in-up" style={{ animationDelay: '0.6s' }}>
+              <div className="bg-gradient-to-r from-pink-400 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce" style={{ animationDelay: '1.5s' }}>
+                <Shield className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Garansi Kualitas</h3>
+              <p className="text-gray-600 mb-4">Jaminan kualitas terbaik untuk setiap produk</p>
+              <div className="text-3xl font-bold text-pink-500">100%</div>
+              <div className="text-sm text-gray-500">Garansi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Featured Products Preview */}
+      <div className="bg-pink-50 py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4 animate-fade-in-up">Koleksi Unggulan</h2>
+            <p className="text-xl text-gray-600 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>Papan bunga terpopuler pilihan pelanggan</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-pink-200 animate-slide-in-left">
+              <div className="h-48 bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                <Sparkles className="w-16 h-16 text-pink-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Akrilik Premium</h3>
+                <p className="text-gray-600 mb-4">Desain elegan dengan bahan akrilik berkualitas tinggi</p>
+                <div className="text-2xl font-bold text-pink-500 mb-4">Mulai Rp 100.000</div>
+                <button 
+                  onClick={() => onPageChange('products')}
+                  className="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-2 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all"
+                >
+                  Lihat Koleksi
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-pink-200 animate-slide-in-up" style={{ animationDelay: '0.2s' }}>
+              <div className="h-48 bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                <Heart className="w-16 h-16 text-pink-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Box Eksklusif</h3>
+                <p className="text-gray-600 mb-4">Rangkaian bunga dalam box dengan sentuhan mewah</p>
+                <div className="text-2xl font-bold text-pink-500 mb-4">Mulai Rp 110.000</div>
+                <button 
+                  onClick={() => onPageChange('products')}
+                  className="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-2 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all"
+                >
+                  Lihat Koleksi
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-pink-200 animate-slide-in-right" style={{ animationDelay: '0.4s' }}>
+              <div className="h-48 bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                <Star className="w-16 h-16 text-pink-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Custom Design</h3>
+                <p className="text-gray-600 mb-4">Desain khusus sesuai keinginan dan tema acara Anda</p>
+                <div className="text-2xl font-bold text-pink-500 mb-4">Konsultasi Gratis</div>
+                <button 
+                  onClick={() => onPageChange('contact')}
+                  className="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-2 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all"
+                >
+                  Hubungi Kami
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600 via-blue-400 to-blue-800 text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <div className="bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <FloatingPetals />
+        
         <div className="relative container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-8">
-            <h2 className="text-5xl font-bold mb-6">Wujudkan Momen Istimewa Anda</h2>
-            <p className="text-2xl text-blue-100 leading-relaxed">
+            <h2 className="text-5xl font-bold mb-6 animate-pulse">Wujudkan Momen Istimewa Anda</h2>
+            <p className="text-2xl text-pink-50 leading-relaxed animate-fade-in-up">
               Jangan biarkan momen spesial berlalu tanpa sentuhan keindahan. 
               Hubungi kami sekarang dan dapatkan konsultasi gratis untuk papan bunga impian Anda.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-6 pt-8">
               <button 
                 onClick={() => onPageChange('contact')}
-                className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl"
+                className="bg-white text-pink-600 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-pink-50 transition-all transform hover:scale-105 shadow-2xl animate-bounce-in"
               >
                 <Phone className="w-6 h-6 inline mr-3" />
                 Hubungi Sekarang
               </button>
               <button 
                 onClick={() => onPageChange('products')}
-                className="bg-yellow-400 text-gray-800 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-yellow-300 transition-all transform hover:scale-105 shadow-2xl"
+                className="bg-pink-200 text-pink-800 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-pink-100 transition-all transform hover:scale-105 shadow-2xl animate-bounce-in"
+                style={{ animationDelay: '0.5s' }}
               >
-                <Star className="w-6 h-6 inline mr-3" />
+                <Sparkles className="w-6 h-6 inline mr-3" />
                 Lihat Katalog
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Custom CSS for animations */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes fade-in-up {
+          0% { opacity: 0; transform: translateY(30px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slide-in-left {
+          0% { opacity: 0; transform: translateX(-50px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slide-in-right {
+          0% { opacity: 0; transform: translateX(50px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slide-in-up {
+          0% { opacity: 0; transform: translateY(50px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce-in {
+          0% { opacity: 0; transform: scale(0.3); }
+          50% { opacity: 1; transform: scale(1.05); }
+          70% { transform: scale(0.9); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-fade-in-up { animation: fade-in-up 1s ease-out forwards; }
+        .animate-slide-in-left { animation: slide-in-left 1s ease-out forwards; }
+        .animate-slide-in-right { animation: slide-in-right 1s ease-out forwards; }
+        .animate-slide-in-up { animation: slide-in-up 1s ease-out forwards; }
+        .animate-bounce-in { animation: bounce-in 1s ease-out forwards; }
+      `}</style>
     </>
   );
 };
@@ -688,8 +926,8 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
     });
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="bg-blue-400 text-white py-12">
+    <div className="bg-pink-50 min-h-screen">
+      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4">Katalog Produk</h1>
           <p className="text-xl">Jelajahi semua koleksi papan bunga kami</p>
@@ -697,7 +935,7 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8 border border-pink-200">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
             <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
               <div>
@@ -705,7 +943,7 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="px-4 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                 >
                   {categories.map(category => (
                     <option key={category.value} value={category.value}>
@@ -720,7 +958,7 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="px-4 py-2 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                 >
                   {sortOptions.map(option => (
                     <option key={option.value} value={option.value}>
@@ -756,8 +994,8 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
 // About Page Component
 const AboutPage = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="bg-blue-400 text-white py-12">
+    <div className="bg-pink-50 min-h-screen">
+      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4">Tentang Dianttha.flo</h1>
           <p className="text-xl">Menghadirkan keindahan bunga dalam setiap momen spesial</p>
@@ -786,12 +1024,12 @@ const AboutPage = () => {
             </div>
           </div>
           
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg border border-pink-200">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Mengapa Memilih Kami?</h3>
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full">
-                  <Award className="w-6 h-6 text-blue-400" />
+                <div className="bg-pink-100 p-3 rounded-full">
+                  <Award className="w-6 h-6 text-pink-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800">Kualitas Premium</h4>
@@ -800,8 +1038,8 @@ const AboutPage = () => {
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full">
-                  <Users className="w-6 h-6 text-blue-400" />
+                <div className="bg-pink-100 p-3 rounded-full">
+                  <Users className="w-6 h-6 text-pink-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800">Tim Profesional</h4>
@@ -810,8 +1048,8 @@ const AboutPage = () => {
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full">
-                  <Truck className="w-6 h-6 text-blue-400" />
+                <div className="bg-pink-100 p-3 rounded-full">
+                  <Truck className="w-6 h-6 text-pink-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800">Pengiriman Tepat Waktu</h4>
@@ -820,8 +1058,8 @@ const AboutPage = () => {
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full">
-                  <Shield className="w-6 h-6 text-blue-400" />
+                <div className="bg-pink-100 p-3 rounded-full">
+                  <Shield className="w-6 h-6 text-pink-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800">Garansi Kepuasan</h4>
@@ -832,23 +1070,31 @@ const AboutPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-white rounded-lg shadow-lg p-8 border border-pink-200">
           <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Statistik Kepercayaan</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">500+</div>
+              <div className="text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={500} suffix="+" />
+              </div>
               <div className="text-gray-600">Pelanggan Puas</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">1000+</div>
+              <div className="text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={1000} suffix="+" />
+              </div>
               <div className="text-gray-600">Papan Bunga Dibuat</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">50+</div>
+              <div className="text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={50} suffix="+" />
+              </div>
               <div className="text-gray-600">Acara Sukses</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">4.8</div>
+              <div className="text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={4.8} />
+              </div>
               <div className="text-gray-600">Rating Kepuasan</div>
             </div>
           </div>
@@ -858,7 +1104,7 @@ const AboutPage = () => {
   );
 };
 
-// Contact Page Component dengan simulasi form
+// Contact Page Component
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -887,10 +1133,8 @@ const ContactPage = () => {
     setIsLoading(true);
 
     try {
-      // Simulate form submission
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Create WhatsApp message
       const whatsappMessage = `*PESAN BARU - Dianttha.flo*\n\n` +
         `*Detail Pengirim:*\n` +
         `Nama: ${formData.name}\n` +
@@ -924,8 +1168,8 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="bg-blue-400 text-white py-12">
+    <div className="bg-pink-50 min-h-screen">
+      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4">Hubungi Kami</h1>
           <p className="text-xl">Kami siap membantu Anda dengan senang hati</p>
@@ -938,10 +1182,10 @@ const ContactPage = () => {
             <h2 className="text-3xl font-bold text-gray-800 mb-8">Informasi Kontak</h2>
             
             <div className="space-y-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md border border-pink-200">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <MapPin className="w-6 h-6 text-blue-400" />
+                  <div className="bg-pink-100 p-3 rounded-full">
+                    <MapPin className="w-6 h-6 text-pink-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-2">Alamat</h3>
@@ -952,10 +1196,10 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md border border-pink-200">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Phone className="w-6 h-6 text-blue-400" />
+                  <div className="bg-pink-100 p-3 rounded-full">
+                    <Phone className="w-6 h-6 text-pink-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-2">Telepon</h3>
@@ -966,10 +1210,10 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md border border-pink-200">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Mail className="w-6 h-6 text-blue-400" />
+                  <div className="bg-pink-100 p-3 rounded-full">
+                    <Mail className="w-6 h-6 text-pink-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-2">Instagram</h3>
@@ -980,10 +1224,10 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md border border-pink-200">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Clock className="w-6 h-6 text-blue-400" />
+                  <div className="bg-pink-100 p-3 rounded-full">
+                    <Clock className="w-6 h-6 text-pink-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-2">Jam Operasional</h3>
@@ -998,7 +1242,7 @@ const ContactPage = () => {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg border border-pink-200">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Kirim Pesan</h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -1013,7 +1257,7 @@ const ContactPage = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                   placeholder="Masukkan nama lengkap Anda"
                 />
               </div>
@@ -1029,7 +1273,7 @@ const ContactPage = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                   placeholder="contoh@email.com"
                 />
               </div>
@@ -1044,7 +1288,7 @@ const ContactPage = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                   placeholder="+62 812-3456-7890"
                 />
               </div>
@@ -1059,7 +1303,7 @@ const ContactPage = () => {
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                 >
                   <option value="">Pilih subjek pesan</option>
                   <option value="pemesanan">Pemesanan Produk</option>
@@ -1081,7 +1325,7 @@ const ContactPage = () => {
                   onChange={handleInputChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
                   placeholder="Tuliskan pesan Anda di sini..."
                 />
               </div>
@@ -1089,7 +1333,7 @@ const ContactPage = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-400 text-white py-3 px-6 rounded-lg hover:bg-blue-500 transition-colors font-semibold disabled:bg-gray-400 flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 px-6 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-colors font-semibold disabled:bg-gray-400 flex items-center justify-center space-x-2"
               >
                 <Phone className="w-5 h-5" />
                 <span>{isLoading ? 'Memproses...' : 'Kirim via WhatsApp'}</span>
@@ -1099,10 +1343,13 @@ const ContactPage = () => {
         </div>
 
         <div className="mt-16">
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-white rounded-lg shadow-lg p-8 border border-pink-200">
             <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Lokasi Kami</h3>
-            <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
-              <p className="text-gray-600">Peta Google Maps akan ditampilkan di sini</p>
+            <div className="bg-gradient-to-br from-pink-100 to-pink-200 h-64 rounded-lg flex items-center justify-center border border-pink-300">
+              <div className="text-center">
+                <MapPin className="w-16 h-16 text-pink-500 mx-auto mb-4" />
+                <p className="text-gray-600">Peta Google Maps akan ditampilkan di sini</p>
+              </div>
             </div>
           </div>
         </div>
@@ -1184,7 +1431,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-pink-50">
       <Header 
         cartItems={cartItems} 
         onCartToggle={() => setIsCartOpen(!isCartOpen)}
@@ -1201,6 +1448,101 @@ const App = () => {
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeFromCart}
       />
+      
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-pink-600 to-pink-700 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <img 
+                  src="/src/assets/logo.jpeg" 
+                  alt="Dianttha.flo Logo" 
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="text-xl font-bold">Dianttha.flo</h3>
+                  <span className="text-pink-200 text-sm">Papan Bunga Akrilik</span>
+                </div>
+              </div>
+              <p className="text-pink-100 mb-4">
+                Menciptakan momen tak terlupakan dengan papan bunga premium untuk setiap perayaan istimewa Anda.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Navigasi</h4>
+              <ul className="space-y-2">
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('home')}
+                    className="text-pink-200 hover:text-white transition-colors"
+                  >
+                    Home
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('products')}
+                    className="text-pink-200 hover:text-white transition-colors"
+                  >
+                    Produk
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('about')}
+                    className="text-pink-200 hover:text-white transition-colors"
+                  >
+                    Tentang
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('contact')}
+                    className="text-pink-200 hover:text-white transition-colors"
+                  >
+                    Kontak
+                  </button>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Kontak</h4>
+              <ul className="space-y-2">
+                <li className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span className="text-pink-200">0821-7185-0071</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4" />
+                  <span className="text-pink-200">@dianttha.flo</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-pink-200">Jl.Manyar Sakti Ujung, Panam</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Jam Operasional</h4>
+              <div className="space-y-2 text-pink-200">
+                <p>Senin - Jumat: 08:00 - 18:00</p>
+                <p>Sabtu: 08:00 - 16:00</p>
+                <p>Minggu: 10:00 - 15:00</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-pink-500 mt-8 pt-8 text-center">
+            <p className="text-pink-200">
+              &copy; 2024 Dianttha.flo. Semua hak cipta dilindungi.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

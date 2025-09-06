@@ -7,7 +7,7 @@ const mockProducts = [
     id: 1,
     name: "Papan Akrilik Box Cream",
     price: 150000,
-    image: "/src/assets/akrilik-box-cream.jpeg",
+    image: "/public/akrilik-box-cream.jpeg",
     category: "akrilik",
     rating: 4.8,
     reviews: 24,
@@ -17,7 +17,7 @@ const mockProducts = [
     id: 2,
     name: "Papan Bunga Akrilik Box Pink",
     price: 150000,
-    image: "/src/assets/akrilik-box-pink.jpeg",
+    image: "/public/akrilik-box-pink.jpeg",
     category: "akrilik",
     rating: 4.9,
     reviews: 18,
@@ -27,7 +27,7 @@ const mockProducts = [
     id: 3,
     name: "Papan Bunga Akrilik Bulat Cream",
     price: 100000,
-    image: "/src/assets/akrilik-bulat-cream.jpeg",
+    image: "/public/akrilik-bulat-cream.jpeg",
     category: "akrilik",
     rating: 5.0,
     reviews: 32,
@@ -37,7 +37,7 @@ const mockProducts = [
     id: 4,
     name: "Papan Bunga Akrilik Bulat Pink",
     price: 100000,
-    image: "/src/assets/akrilik-bulat-pink.jpeg",
+    image: "/public/akrilik-bulat-pink.jpeg",
     category: "akrilik", 
     rating: 4.7,
     reviews: 15,
@@ -47,7 +47,7 @@ const mockProducts = [
     id: 5,
     name: "Papan Bunga Akrilik Kubah",
     price: 100000,
-    image: "/src/assets/akrilik-kubah.jpeg",
+    image: "/public/akrilik-kubah.jpeg",
     category: "akrilik",
     rating: 4.6,
     reviews: 21,
@@ -57,7 +57,7 @@ const mockProducts = [
     id: 6,
     name: "Papan Bunga Box Kubah",
     price:110000,
-    image: "/src/assets/box-kubah.jpeg",
+    image: "/public/box-kubah.jpeg",
     category: "box",
     rating: 4.5,
     reviews: 12,
@@ -67,7 +67,7 @@ const mockProducts = [
     id: 7,
     name: "Papan Bunga Box Persegi",
     price: 110000,
-    image: "/src/assets/box-persegi.jpeg",
+    image: "/public/box-persegi.jpeg",
     category: "box",
     rating: 5.0,
     reviews: 12,
@@ -77,7 +77,7 @@ const mockProducts = [
     id: 8,
     name: "Papan Bunga Box Wave",
     price: 110000,
-    image: "/src/assets/box-wave.jpeg",
+    image: "/public/box-wave.jpeg",
     category: "box",
     rating: 4.9,
     reviews: 30,
@@ -145,7 +145,7 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
             <div className="flex items-center space-x-3 cursor-pointer group" onClick={() => onPageChange('home')}>
               <div className="relative">
                 <img 
-                  src="/src/assets/logo.jpeg" 
+                  src="/public/logo.jpeg" 
                   alt="Dianttha.flo Logo" 
                   className="w-10 h-10 rounded-full object-cover transition-transform group-hover:scale-110"
                 />
@@ -675,7 +675,7 @@ const HomePage = ({ onPageChange }) => {
                     <div className="flex justify-center">
                       <div className="relative">
                         <img 
-                          src="/src/assets/logo.jpeg" 
+                          src="/public/logo.jpeg" 
                           alt="Dianttha.flo Logo" 
                           className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-2xl transition-transform hover:scale-110"
                         />
@@ -1456,7 +1456,7 @@ const App = () => {
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img 
-                  src="/src/assets/logo.jpeg" 
+                  src="/public/logo.jpeg" 
                   alt="Dianttha.flo Logo" 
                   className="w-10 h-10 rounded-full object-cover"
                 />

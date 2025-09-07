@@ -69,7 +69,7 @@ const mockProducts = [
     price:110000,
     images: ["/box-kubah.png", "/box-kubah2.png", "/box-kubah3.png", "/box-kubah4.png", "/box-kubah5.png"],
     category: "box",
-    rating: 4.5,
+    rating: 5,
     reviews: 12,
     description: "Ukuran 50x70 dengan pilihan warna bunga pink, putih, mauve, biru, coklat, hijau sage, merah"
   },
@@ -77,7 +77,7 @@ const mockProducts = [
     id: 8,
     name: "Papan Bunga Box Persegi",
     price: 110000,
-    images: ["/box-persegi"],
+    images: ["/box-persegi.png"],
     category: "box",
     rating: 5.0,
     reviews: 12,
@@ -260,7 +260,7 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-lg sticky top-0 z-50 border-b-2 border-pink-100">
+    <header className="bg-[url('/sampul-header.png')] bg-center shadow-lg sticky top-0 z-50 border-b-2 border-pink-100">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 lg:space-x-4">
@@ -593,7 +593,7 @@ const TestimonialsPage = () => {
 
   return (
     <div className="bg-pink-50 min-h-screen">
-      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
+      <div className="bg-[url('/pink.png')] bg-cover text-white py-8 lg:py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">Testimoni Pelanggan</h1>
           <p className="text-lg lg:text-xl">Chat dan feedback langsung dari pelanggan setia kami</p>
@@ -1111,7 +1111,7 @@ const HomePage = ({ onPageChange }) => {
   return (
     <>
       {/* Hero Section with Animations */}
-      <div className="relative bg-gradient-to-br from-pink-200 via-pink-300 to-pink-500 text-white overflow-hidden min-h-screen">
+      <div className="relative bg-[url('/sampul-bunga2.png')] bg-center from-pink-200 via-pink-300 to-pink-500 text-white overflow-hidden min-h-screen">
         <FloatingPetals />
         <div className="absolute inset-0 bg-black/10"></div>
         
@@ -1469,7 +1469,7 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
 
   return (
     <div className="bg-pink-50 min-h-screen">
-      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
+      <div className="bg-[url('/pink.png')] bg-cover text-white py-8 lg:py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">Katalog Produk</h1>
           <p className="text-lg lg:text-xl">Jelajahi semua koleksi papan bunga kami</p>
@@ -1537,7 +1537,7 @@ const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) =>
 const AboutPage = () => {
   return (
     <div className="bg-pink-50 min-h-screen">
-      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
+      <div className="bg-[url('/pink.png')] bg-cover text-white py-8 lg:py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">Tentang Dianttha.flo</h1>
           <p className="text-lg lg:text-xl">Menghadirkan keindahan bunga dalam setiap momen spesial</p>
@@ -1711,7 +1711,7 @@ const ContactPage = () => {
 
   return (
     <div className="bg-pink-50 min-h-screen">
-      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
+      <div className="bg-[url('/pink.png')] bg-cover text-white py-8 lg:py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">Hubungi Kami</h1>
           <p className="text-lg lg:text-xl">Kami siap membantu Anda dengan senang hati</p>

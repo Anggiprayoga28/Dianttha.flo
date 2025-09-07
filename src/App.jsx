@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Heart, Star, Plus, Minus, Search, Filter, Phone, Mail, MapPin, Clock, Award, Users, Truck, Shield, Sparkles } from 'lucide-react';
+import { ShoppingCart, Heart, Star, Plus, Minus, Search, Filter, Phone, Mail, MapPin, Clock, Award, Users, Truck, Shield, Sparkles, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 // Mock Database
 const mockProducts = [
@@ -7,7 +7,7 @@ const mockProducts = [
     id: 1,
     name: "Papan Akrilik Box Cream",
     price: 150000,
-    image: "/akrilik-box-cream.png",
+    images: ["/akrilik-box-cream.png"],
     category: "akrilik",
     rating: 4.8,
     reviews: 24,
@@ -17,7 +17,7 @@ const mockProducts = [
     id: 2,
     name: "Papan Bunga Akrilik Box Pink",
     price: 150000,
-    image: "/akrilik-box-pink.png",
+    images: ["/akrilik-box-pink.png"],
     category: "akrilik",
     rating: 4.9,
     reviews: 18,
@@ -27,7 +27,7 @@ const mockProducts = [
     id: 3,
     name: "Papan Bunga Akrilik Bulat Cream",
     price: 100000,
-    image: "/akrilik-bulat-cream.png",
+    images: ["/akrilik-bulat-cream.png"],
     category: "akrilik",
     rating: 5.0,
     reviews: 32,
@@ -37,7 +37,7 @@ const mockProducts = [
     id: 4,
     name: "Papan Bunga Akrilik Bulat Pink",
     price: 100000,
-    image: "/akrilik-bulat-pink.png",
+    images: ["/akrilik-bulat-pink.png"],
     category: "akrilik", 
     rating: 4.7,
     reviews: 15,
@@ -45,43 +45,147 @@ const mockProducts = [
   },
   {
     id: 5,
+    name: "Papan Bunga Akrilik Persegi Biru",
+    price: 100000,
+    images: ["/akrilik-persegi-biru.png", "/akrilik-persegi-biru2.png"],
+    category: "akrilik",
+    rating: 4.6,
+    reviews: 21,
+    description: "Ukuran 45x65cm dengan pilihan warna bunga pink, putih,biru, cream, ungu"
+  },
+    {
+    id: 6,
     name: "Papan Bunga Akrilik Kubah",
     price: 100000,
-    image: "/akrilik-kubah.png",
+    images: ["/akrilik-kubah.png"],
     category: "akrilik",
     rating: 4.6,
     reviews: 21,
     description: "Ukuran 45x65 cm dengan pilihan warna bunga pink, putih,biru, cream, ungu"
   },
   {
-    id: 6,
+    id: 7,
     name: "Papan Bunga Box Kubah",
     price:110000,
-    image: "/box-kubah.png",
+    images: ["/box-kubah.png", "/box-kubah2.png", "/box-kubah3.png", "/box-kubah4.png", "/box-kubah5.png"],
     category: "box",
     rating: 4.5,
     reviews: 12,
     description: "Ukuran 50x70 dengan pilihan warna bunga pink, putih, mauve, biru, coklat, hijau sage, merah"
   },
   {
-    id: 7,
+    id: 8,
     name: "Papan Bunga Box Persegi",
     price: 110000,
-    image: "/box-persegi.png",
+    images: ["/box-persegi"],
     category: "box",
     rating: 5.0,
     reviews: 12,
     description: "Ukuran 50x70 dengan pilihan warna bunga pink, putih, mauve, biru, coklat, hijau sage, merah"
   },
   {
-    id: 8,
+    id: 9,
     name: "Papan Bunga Box Wave",
     price: 110000,
-    image: "/box-wave.png",
+    images: ["/box-wave.png", "/box-wave2.png", "/box-wave3.png"],
     category: "box",
     rating: 4.9,
     reviews: 30,
     description: "Ukuran 50x70 dengan pilihan warna bunga pink, putih, mauve, biru, coklat, hijau sage, merah"
+  }
+];
+
+// Mock Testimonials Data
+const mockTestimonials = [
+  {
+    id: 1,
+    name: "Sarah Putri",
+    role: "Bride",
+    image: "/testi1.png",
+    rating: 5,
+    text: "Papan bunga dari Dianttha.flo benar-benar memukau! Kualitasnya premium dan sesuai dengan ekspektasi kami. Tim sangat responsif dan profesional.",
+    event: "Pernikahan",
+    date: "Oktober 2024"
+  },
+  {
+    id: 2,
+    name: "Budi Santoso",
+    role: "Event Organizer",
+    image: "/testi2.png",
+    rating: 5,
+    text: "Sudah berkali-kali menggunakan jasa Dianttha.flo untuk berbagai acara. Selalu tepat waktu dan hasil selalu memuaskan klien kami.",
+    event: "Corporate Event",
+    date: "November 2024"
+  },
+  {
+    id: 3,
+    name: "Maya Sari",
+    role: "Mother",
+    image: "/testi3.png",
+    rating: 5,
+    text: "Untuk ulang tahun anak saya, papan bunga akrilik bulat dari sini sangat cantik. Anak saya dan teman-temannya sangat senang!",
+    event: "Birthday Party",
+    date: "September 2024"
+  },
+  {
+    id: 4,
+    name: "Andi Pratama",
+    role: "Groom",
+    image: "/testi4.png",
+    rating: 5,
+    text: "Pelayanan luar biasa! Dari konsultasi hingga pengiriman semua berjalan lancar. Papan bunganya jadi focal point di acara kami.",
+    event: "Engagement",
+    date: "Desember 2024"
+  },
+  {
+    id: 5,
+    name: "Lisa Chen",
+    role: "Wedding Planner",
+    image: "/testi5.png",
+    rating: 4,
+    text: "Kualitas papan bunga sangat bagus dan sesuai dengan brief yang diberikan. Akan recommend ke klien-klien lainnya.",
+    event: "Wedding",
+    date: "Oktober 2024"
+  },
+  {
+    id: 6,
+    name: "Rahman Hakim",
+    role: "Corporate Manager",
+    image: "/testi6.png",
+    rating: 5,
+    text: "Untuk grand opening kantor baru, papan bunga box dari Dianttha.flo memberikan kesan mewah dan elegan. Terima kasih!",
+    event: "Grand Opening",
+    date: "November 2024"
+  },
+  {
+    id: 7,
+    name: "Rahman Hakim",
+    role: "Corporate Manager",
+    image: "/testi7.png",
+    rating: 5,
+    text: "Untuk grand opening kantor baru, papan bunga box dari Dianttha.flo memberikan kesan mewah dan elegan. Terima kasih!",
+    event: "Grand Opening",
+    date: "November 2024"
+  },
+  {
+    id: 8,
+    name: "Rahman Hakim",
+    role: "Corporate Manager",
+    image: "/testi8.png",
+    rating: 5,
+    text: "Untuk grand opening kantor baru, papan bunga box dari Dianttha.flo memberikan kesan mewah dan elegan. Terima kasih!",
+    event: "Grand Opening",
+    date: "November 2024"
+  },
+  {
+    id: 9,
+    name: "Rahman Hakim",
+    role: "Corporate Manager",
+    image: "/testi9.png",
+    rating: 5,
+    text: "Untuk grand opening kantor baru, papan bunga box dari Dianttha.flo memberikan kesan mewah dan elegan. Terima kasih!",
+    event: "Grand Opening",
+    date: "November 2024"
   }
 ];
 
@@ -171,7 +275,7 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
               </div>
               <div>
                 <h1 className="text-lg lg:text-2xl font-bold text-pink-500 group-hover:text-pink-600 transition-colors">Dianttha.flo</h1>
-                <span className="text-gray-600 text-xs lg:text-sm">Papan Bunga Akrilik</span>
+                <span className="text-gray-600 text-xs lg:text-sm">Papan Bunga Akrilik Pekanbaru</span>
               </div>
             </div>
           </div>
@@ -197,6 +301,16 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
               }`}
             >
               Produk
+            </button>
+            <button 
+              onClick={() => onPageChange('testimonials')}
+              className={`transition-all duration-300 hover:scale-105 ${
+                currentPage === 'testimonials' 
+                  ? 'text-pink-500 font-semibold border-b-2 border-pink-300' 
+                  : 'text-gray-600 hover:text-pink-500'
+              }`}
+            >
+              Testimoni
             </button>
             <button 
               onClick={() => onPageChange('about')}
@@ -251,7 +365,7 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
 
         {/* Mobile Navigation Menu */}
         <div className={`md:hidden transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+          isMobileMenuOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <nav className="pt-4 pb-2 border-t border-pink-100 mt-4">
             <div className="flex flex-col space-y-3">
@@ -280,6 +394,19 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
                 }`}
               >
                 Produk
+              </button>
+              <button 
+                onClick={() => {
+                  onPageChange('testimonials');
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`text-left py-2 px-4 rounded-lg transition-all duration-300 ${
+                  currentPage === 'testimonials' 
+                    ? 'bg-pink-100 text-pink-600 font-semibold' 
+                    : 'text-gray-600 hover:text-pink-500 hover:bg-pink-50'
+                }`}
+              >
+                Testimoni
               </button>
               <button 
                 onClick={() => {
@@ -315,51 +442,10 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
   );
 };
 
-// Search and Filter Component
-const SearchFilter = ({ searchTerm, onSearchChange, selectedCategory, onCategoryChange }) => {
-  const categories = [
-    { value: '', label: 'Semua Kategori' },
-    { value: 'akrilik', label: 'Akrilik' },
-    { value: 'box', label: 'Box' },
-  ];
-
-  return (
-    <div className="bg-pink-50 py-6">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-pink-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Cari papan bunga..."
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
-            />
-          </div>
-          
-          <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-pink-400 w-5 h-5" />
-            <select
-              value={selectedCategory}
-              onChange={(e) => onCategoryChange(e.target.value)}
-              className="pl-10 pr-8 py-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent bg-white"
-            >
-              {categories.map(category => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Product Card Component - Mobile Responsive
+// Product Card Component with Image Slider - Mobile Responsive
 const ProductCard = ({ product, onAddToCart, onToggleFavorite, isFavorite }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -367,14 +453,69 @@ const ProductCard = ({ product, onAddToCart, onToggleFavorite, isFavorite }) => 
     }).format(price);
   };
 
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === product.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? product.images.length - 1 : prev - 1
+    );
+  };
+
+  const goToImage = (index) => {
+    setCurrentImageIndex(index);
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border border-pink-100">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border border-pink-100 group">
       <div className="relative">
-        <img 
-          src={product.image} 
-          alt={product.name}
-          className="w-full h-40 lg:h-48 object-cover transition-transform duration-500 hover:scale-110"
-        />
+        {/* Main Image Display */}
+        <div className="relative w-full h-40 lg:h-48 overflow-hidden">
+          <img 
+            src={product.images[currentImageIndex]} 
+            alt={`${product.name} - ${currentImageIndex + 1}`}
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+          />
+          
+          {/* Navigation Arrows */}
+          {product.images.length > 1 && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 lg:p-2 transition-all duration-300 opacity-0 group-hover:opacity-100"
+              >
+                <ChevronLeft className="w-3 h-3 lg:w-4 lg:h-4" />
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 lg:p-2 transition-all duration-300 opacity-0 group-hover:opacity-100"
+              >
+                <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
+              </button>
+            </>
+          )}
+        </div>
+        
+        {/* Image Indicators */}
+        {product.images.length > 1 && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
+            {product.images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToImage(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentImageIndex 
+                    ? 'bg-white scale-110' 
+                    : 'bg-white/50 hover:bg-white/80'
+                }`}
+              />
+            ))}
+          </div>
+        )}
+        
         <button
           onClick={() => onToggleFavorite(product.id)}
           className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
@@ -430,6 +571,259 @@ const ProductCard = ({ product, onAddToCart, onToggleFavorite, isFavorite }) => 
   );
 };
 
+// Testimonials Page Component - Mobile Responsive with Wider Portrait Photos
+const TestimonialsPage = () => {
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => 
+      prev === mockTestimonials.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => 
+      prev === 0 ? mockTestimonials.length - 1 : prev - 1
+    );
+  };
+
+  const goToTestimonial = (index) => {
+    setCurrentTestimonial(index);
+  };
+
+  return (
+    <div className="bg-pink-50 min-h-screen">
+      <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-4">Testimoni Pelanggan</h1>
+          <p className="text-lg lg:text-xl">Chat dan feedback langsung dari pelanggan setia kami</p>
+        </div>
+      </div>
+
+      {/* Featured Testimonial Slider */}
+      <div className="container mx-auto px-4 py-8 lg:py-12">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-pink-200 mb-8 lg:mb-12">
+          <div className="relative">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              {/* Photo Section - Wider Portrait */}
+              <div className="relative h-96 lg:h-[500px] flex justify-center bg-gradient-to-br from-gray-100 to-gray-200 p-4 lg:p-6">
+                <div className="relative w-80 lg:w-96 h-full">
+                  <img 
+                    src={mockTestimonials[currentTestimonial].image} 
+                    alt={`Chat screenshot ${mockTestimonials[currentTestimonial].name}`}
+                    className="w-full h-full object-cover rounded-lg shadow-lg border-2 border-white"
+                    style={{ aspectRatio: '3/4' }}
+                  />
+                  <div className="absolute -top-2 -left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
+                    WhatsApp Chat
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-pink-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                    {mockTestimonials[currentTestimonial].event}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Content Section */}
+              <div className="p-6 lg:p-8 flex flex-col justify-center">
+                <div className="mb-4">
+                  <Quote className="w-12 h-12 text-pink-400 mb-4" />
+                  <p className="text-gray-700 text-lg lg:text-xl leading-relaxed mb-6">
+                    "{mockTestimonials[currentTestimonial].text}"
+                  </p>
+                </div>
+                
+                <div className="flex items-center mb-4">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className={`w-5 h-5 ${
+                          i < mockTestimonials[currentTestimonial].rating 
+                            ? 'text-yellow-400 fill-current' 
+                            : 'text-gray-300'
+                        }`} 
+                      />
+                    ))}
+                  </div>
+                  <span className="ml-2 text-gray-600 font-semibold">
+                    {mockTestimonials[currentTestimonial].rating}/5
+                  </span>
+                </div>
+                
+                <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                  <h3 className="text-xl font-bold text-gray-800">
+                    {mockTestimonials[currentTestimonial].name}
+                  </h3>
+                  <p className="text-pink-500 font-medium">
+                    {mockTestimonials[currentTestimonial].role}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-1">
+                    {mockTestimonials[currentTestimonial].date}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevTestimonial}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-pink-500 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={nextTestimonial}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-pink-500 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+          
+          {/* Testimonial Indicators */}
+          <div className="flex justify-center p-4 space-x-2">
+            {mockTestimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToTestimonial(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentTestimonial 
+                    ? 'bg-pink-500 scale-125' 
+                    : 'bg-gray-300 hover:bg-pink-300'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* All Testimonials Grid - Wider Portrait Format */}
+        <div className="mb-8 lg:mb-12">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 text-center mb-8">Semua Chat Testimoni</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {mockTestimonials.map((testimonial) => (
+              <div key={testimonial.id} className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                {/* Wider Portrait Chat Screenshot */}
+                <div className="relative p-4 bg-gradient-to-br from-gray-50 to-gray-100">
+                  <div className="relative mx-auto w-full">
+                    <img 
+                      src={testimonial.image} 
+                      alt={`Chat ${testimonial.name}`}
+                      className="w-full h-100 object-cover rounded-lg shadow-md border border-gray-200"
+                      style={{ aspectRatio: '3/4' }}
+                    />
+                    <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                      WhatsApp
+                    </div>
+                    <div className="absolute top-2 right-2">
+                      <div className="flex items-center bg-white/90 rounded-full px-2 py-1">
+                        <Star className="w-3 h-3 text-yellow-400 fill-current mr-1" />
+                        <span className="text-xs font-semibold text-gray-800">{testimonial.rating}</span>
+                      </div>
+                    </div>
+                    {/* <div className="absolute bottom-2 left-2 bg-pink-500 px-2 py-1 rounded-full text-xs font-semibold text-white">
+                      {testimonial.event}
+                    </div> */}
+                  </div>
+                </div>
+                
+                <div className="p-4">
+                  <div className="flex items-center mb-3">
+                    <Quote className="w-5 h-5 text-pink-400 mr-2" />
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <Star 
+                          key={i} 
+                          className={`w-3 h-3 ${
+                            i < testimonial.rating 
+                              ? 'text-yellow-400 fill-current' 
+                              : 'text-gray-300'
+                          }`} 
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-700 text-sm mb-4 line-clamp-3">
+                    "{testimonial.text}"
+                  </p>
+                  
+                  <div className="border-t border-pink-100 pt-3">
+                    <h4 className="font-bold text-gray-800 text-sm">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-pink-500 font-medium text-xs">
+                      {testimonial.role}
+                    </p>
+                    <p className="text-gray-500 text-xs mt-1">
+                      {testimonial.date}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 border border-pink-200">
+          <h3 className="text-xl lg:text-2xl font-bold text-gray-800 mb-6 text-center">Tingkat Kepuasan Pelanggan</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 text-center">
+            <div>
+              <div className="text-2xl lg:text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={5} />
+              </div>
+              <div className="text-gray-600 text-sm lg:text-base">Rating Rata-rata</div>
+              <div className="flex justify-center mt-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="text-2xl lg:text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={98} suffix="%" />
+              </div>
+              <div className="text-gray-600 text-sm lg:text-base">Tingkat Kepuasan</div>
+            </div>
+            <div>
+              <div className="text-2xl lg:text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={250} suffix="+" />
+              </div>
+              <div className="text-gray-600 text-sm lg:text-base">Chat Positif</div>
+            </div>
+            <div>
+              <div className="text-2xl lg:text-3xl font-bold text-pink-500 mb-2">
+                <AnimatedCounter end={95} suffix="%" />
+              </div>
+              <div className="text-gray-600 text-sm lg:text-base">Repeat Customer</div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center mt-12 lg:mt-16">
+          <div className="bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-2xl p-8 lg:p-12">
+            <h3 className="text-2xl lg:text-3xl font-bold mb-4">Ingin Chat Testimoni Anda Tampil di Sini?</h3>
+            <p className="text-lg lg:text-xl text-pink-100 mb-6">
+              Rasakan sendiri pengalaman berbelanja papan bunga premium di Dianttha.flo dan bagikan pengalaman Anda!
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button className="bg-white text-pink-600 px-8 py-3 rounded-xl font-bold hover:bg-pink-50 transition-all transform hover:scale-105">
+                <Phone className="w-5 h-5 inline mr-2" />
+                Chat via WhatsApp
+              </button>
+              <button className="bg-pink-200 text-pink-800 px-8 py-3 rounded-xl font-bold hover:bg-pink-100 transition-all transform hover:scale-105">
+                <Sparkles className="w-5 h-5 inline mr-2" />
+                Lihat Produk
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Cart Component dengan simulasi pengiriman WhatsApp
 const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -467,7 +861,6 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
     setIsLoading(true);
     
     try {
-      // Prepare order details for WhatsApp
       const cartItemsText = cartItems.map(item => 
         `- ${item.name} (${item.quantity}x) = ${formatPrice(item.price * item.quantity)}`
       ).join('\n');
@@ -483,16 +876,13 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
         `*Catatan:* ${customerInfo.notes || '-'}\n\n` +
         `*Tanggal Pesanan:* ${new Date().toLocaleDateString('id-ID')}`;
 
-      // WhatsApp business number (ganti dengan nomor WhatsApp bisnis Anda)
-      const whatsappNumber = '6282171850071'; // Format: 62 untuk Indonesia
+      const whatsappNumber = '6282171850071';
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderMessage)}`;
       
-      // Open WhatsApp
       window.open(whatsappUrl, '_blank');
 
       alert('Pesanan akan dikirim melalui WhatsApp. Silakan lanjutkan di aplikasi WhatsApp yang terbuka.');
       
-      // Reset form and cart
       setCustomerInfo({
         name: '',
         email: '',
@@ -543,7 +933,7 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
                   {cartItems.map(item => (
                     <div key={item.id} className="flex items-center space-x-3 mb-4 pb-4 border-b border-pink-100">
                       <img 
-                        src={item.image} 
+                        src={item.images ? item.images[0] : item.image} 
                         alt={item.name}
                         className="w-16 h-16 object-cover rounded-lg border border-pink-200"
                       />
@@ -710,7 +1100,7 @@ const Cart = ({ isOpen, cartItems, onClose, onUpdateQuantity, onRemoveItem }) =>
   );
 };
 
-// New Home Page Component - Landing Style with Animations
+// Home Page Component - Landing Style with Animations
 const HomePage = ({ onPageChange }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -1044,198 +1434,6 @@ const HomePage = ({ onPageChange }) => {
   );
 };
 
-// Products Page, About Page, Contact Page components tetap sama seperti sebelumnya...
-// (Saya skip karena tidak ada perubahan dari versi sebelumnya)
-
-// Main App Component
-const App = () => {
-  const [products] = useState(mockProducts);
-  const [cartItems, setCartItems] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const addToCart = (product) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(item => item.id === product.id);
-      if (existingItem) {
-        return prev.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeFromCart(id);
-      return;
-    }
-    setCartItems(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeFromCart = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const toggleFavorite = (id) => {
-    setFavorites(prev =>
-      prev.includes(id)
-        ? prev.filter(fav => fav !== id)
-        : [...prev, id]
-    );
-  };
-
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'products':
-        return (
-          <ProductsPage
-            products={products}
-            onAddToCart={addToCart}
-            onToggleFavorite={toggleFavorite}
-            favorites={favorites}
-          />
-        );
-      case 'about':
-        return <AboutPage />;
-      case 'contact':
-        return <ContactPage />;
-      default:
-        return (
-          <HomePage
-            onPageChange={setCurrentPage}
-          />
-        );
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-pink-50">
-      <Header 
-        cartItems={cartItems} 
-        onCartToggle={() => setIsCartOpen(!isCartOpen)}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
-      
-      {renderCurrentPage()}
-      
-      <Cart
-        isOpen={isCartOpen}
-        cartItems={cartItems}
-        onClose={() => setIsCartOpen(false)}
-        onUpdateQuantity={updateQuantity}
-        onRemoveItem={removeFromCart}
-      />
-      
-      {/* Footer - Mobile Responsive */}
-      <footer className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
-                <img 
-                  src="/logo.png" 
-                  alt="Dianttha.flo Logo" 
-                  className="w-8 h-8 lg:w-10 lg:h-10 rounded-full object-cover"
-                />
-                <div>
-                  <h3 className="text-lg lg:text-xl font-bold">Dianttha.flo</h3>
-                  <span className="text-pink-200 text-xs lg:text-sm">Papan Bunga Akrilik</span>
-                </div>
-              </div>
-              <p className="text-pink-100 mb-4 text-sm lg:text-base">
-                Menciptakan momen tak terlupakan dengan papan bunga premium untuk setiap perayaan istimewa Anda.
-              </p>
-            </div>
-            
-            <div className="text-center md:text-left">
-              <h4 className="text-base lg:text-lg font-semibold mb-4">Navigasi</h4>
-              <ul className="space-y-2">
-                <li>
-                  <button 
-                    onClick={() => setCurrentPage('home')}
-                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
-                  >
-                    Home
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => setCurrentPage('products')}
-                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
-                  >
-                    Produk
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => setCurrentPage('about')}
-                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
-                  >
-                    Tentang
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => setCurrentPage('contact')}
-                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
-                  >
-                    Kontak
-                  </button>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="text-center md:text-left">
-              <h4 className="text-base lg:text-lg font-semibold mb-4">Kontak</h4>
-              <ul className="space-y-2">
-                <li className="flex items-center justify-center md:justify-start space-x-2">
-                  <Phone className="w-3 h-3 lg:w-4 lg:h-4" />
-                  <span className="text-pink-200 text-sm lg:text-base">0821-7185-0071</span>
-                </li>
-                <li className="flex items-center justify-center md:justify-start space-x-2">
-                  <Mail className="w-3 h-3 lg:w-4 lg:h-4" />
-                  <span className="text-pink-200 text-sm lg:text-base">@dianttha.flo</span>
-                </li>
-                <li className="flex items-center justify-center md:justify-start space-x-2">
-                  <MapPin className="w-3 h-3 lg:w-4 lg:h-4" />
-                  <span className="text-pink-200 text-sm lg:text-base">Jl.Manyar Sakti Ujung, Panam</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="text-center md:text-left">
-              <h4 className="text-base lg:text-lg font-semibold mb-4">Jam Operasional</h4>
-              <div className="space-y-1 text-pink-200 text-sm lg:text-base">
-                <p>Senin - Jumat: 08:00 - 18:00</p>
-                <p>Sabtu: 08:00 - 16:00</p>
-                <p>Minggu: 10:00 - 15:00</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-pink-300 mt-6 lg:mt-8 pt-6 lg:pt-8 text-center">
-            <p className="text-pink-200 text-sm lg:text-base">
-              &copy; 2024 Dianttha.flo. Semua hak cipta dilindungi.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
 // Products Page Component - Mobile Responsive
 const ProductsPage = ({ products, onAddToCart, onToggleFavorite, favorites }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -1539,8 +1737,7 @@ const ContactPage = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="bg-white p-4 lg:p-6 rounded-lg shadow-md border border-pink-200">
+          <div className="bg-white p-4 lg:p-6 rounded-lg shadow-md border border-pink-200">
                 <div className="flex items-start space-x-3 lg:space-x-4">
                   <div className="bg-pink-100 p-2 lg:p-3 rounded-full">
                     <Phone className="w-5 h-5 lg:w-6 lg:h-6 text-pink-500" />
@@ -1698,6 +1895,205 @@ const ContactPage = () => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+// Main App Component
+const App = () => {
+  const [products] = useState(mockProducts);
+  const [cartItems, setCartItems] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [currentPage, setCurrentPage] = useState('home');
+
+  const addToCart = (product) => {
+    setCartItems(prev => {
+      const existingItem = prev.find(item => item.id === product.id);
+      if (existingItem) {
+        return prev.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  const updateQuantity = (id, newQuantity) => {
+    if (newQuantity <= 0) {
+      removeFromCart(id);
+      return;
+    }
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  const removeFromCart = (id) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const toggleFavorite = (id) => {
+    setFavorites(prev =>
+      prev.includes(id)
+        ? prev.filter(fav => fav !== id)
+        : [...prev, id]
+    );
+  };
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'products':
+        return (
+          <ProductsPage
+            products={products}
+            onAddToCart={addToCart}
+            onToggleFavorite={toggleFavorite}
+            favorites={favorites}
+          />
+        );
+      case 'testimonials':
+        return <TestimonialsPage />;
+      case 'about':
+        return <AboutPage />;
+      case 'contact':
+        return <ContactPage />;
+      default:
+        return (
+          <HomePage
+            onPageChange={setCurrentPage}
+          />
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-pink-50">
+      <Header 
+        cartItems={cartItems} 
+        onCartToggle={() => setIsCartOpen(!isCartOpen)}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+      
+      {renderCurrentPage()}
+      
+      <Cart
+        isOpen={isCartOpen}
+        cartItems={cartItems}
+        onClose={() => setIsCartOpen(false)}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeFromCart}
+      />
+      
+      {/* Footer - Mobile Responsive */}
+      <footer className="bg-gradient-to-r from-pink-400 to-pink-500 text-white py-8 lg:py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
+                <img 
+                  src="/logo.png" 
+                  alt="Dianttha.flo Logo" 
+                  className="w-8 h-8 lg:w-10 lg:h-10 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="text-lg lg:text-xl font-bold">Dianttha.flo</h3>
+                  <span className="text-pink-200 text-xs lg:text-sm">Papan Bunga Akrilik</span>
+                </div>
+              </div>
+              <p className="text-pink-100 mb-4 text-sm lg:text-base">
+                Menciptakan momen tak terlupakan dengan papan bunga premium untuk setiap perayaan istimewa Anda.
+              </p>
+            </div>
+            
+            <div className="text-center md:text-left">
+              <h4 className="text-base lg:text-lg font-semibold mb-4">Navigasi</h4>
+              <ul className="space-y-2">
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('home')}
+                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
+                  >
+                    Home
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('products')}
+                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
+                  >
+                    Produk
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('testimonials')}
+                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
+                  >
+                    Testimoni
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('about')}
+                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
+                  >
+                    Tentang
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setCurrentPage('contact')}
+                    className="text-pink-200 hover:text-white transition-colors text-sm lg:text-base"
+                  >
+                    Kontak
+                  </button>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="text-center md:text-left">
+              <h4 className="text-base lg:text-lg font-semibold mb-4">Kontak</h4>
+              <ul className="space-y-2">
+                <li className="flex items-center justify-center md:justify-start space-x-2">
+                  <Phone className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="text-pink-200 text-sm lg:text-base">0821-7185-0071</span>
+                </li>
+                <li className="flex items-center justify-center md:justify-start space-x-2">
+                  <Mail className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="text-pink-200 text-sm lg:text-base">@dianttha.flo</span>
+                </li>
+                <li className="flex items-center justify-center md:justify-start space-x-2">
+                  <MapPin className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="text-pink-200 text-sm lg:text-base">Jl.Manyar Sakti Ujung, Panam</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="text-center md:text-left">
+              <h4 className="text-base lg:text-lg font-semibold mb-4">Jam Operasional</h4>
+              <div className="space-y-1 text-pink-200 text-sm lg:text-base">
+                <p>Senin - Jumat: 08:00 - 18:00</p>
+                <p>Sabtu: 08:00 - 16:00</p>
+                <p>Minggu: 10:00 - 15:00</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-pink-300 mt-6 lg:mt-8 pt-6 lg:pt-8 text-center">
+            <p className="text-pink-200 text-sm lg:text-base">
+              &copy; 2024 Dianttha.flo. Semua hak cipta dilindungi.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

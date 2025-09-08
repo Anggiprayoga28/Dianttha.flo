@@ -436,7 +436,7 @@ const Header = ({ cartItems, onCartToggle, currentPage, onPageChange }) => {
   );
 };
 
-// Product Card Component - Enhanced Mobile Responsive
+// Product Card Component - Enhanced Mobile Responsive dengan Touch Support
 const ProductCard = ({
   product,
   onAddToCart,
@@ -445,6 +445,8 @@ const ProductCard = ({
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("id-ID", {
@@ -470,11 +472,42 @@ const ProductCard = ({
     setCurrentImageIndex(index);
   };
 
+  // Touch handlers untuk swipe gesture
+  const handleTouchStart = (e) => {
+    setTouchEnd(0); // Reset touchEnd
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (product.images.length > 1) {
+      if (isLeftSwipe) {
+        nextImage();
+      } else if (isRightSwipe) {
+        prevImage();
+      }
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] border border-[#F9DADD] group">
       <div className="relative">
         {/* Main Image Display */}
-        <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden">
+        <div 
+          className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {imageError ? (
             <div className="w-full h-full bg-gradient-to-br from-[#F9DADD] to-[#EEB6BB] flex items-center justify-center">
               <div className="text-center">
@@ -491,34 +524,34 @@ const ProductCard = ({
             />
           )}
 
-          {/* Navigation Arrows - Only show if multiple images and not on mobile */}
+          {/* Navigation Arrows - Selalu terlihat di mobile jika ada multiple images */}
           {product.images.length > 1 && !imageError && (
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 sm:p-2 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 sm:p-2 transition-all duration-300 opacity-70 sm:opacity-0 sm:group-hover:opacity-100 z-10"
               >
                 <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 sm:p-2 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 sm:p-2 transition-all duration-300 opacity-70 sm:opacity-0 sm:group-hover:opacity-100 z-10"
               >
                 <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             </>
           )}
 
-          {/* Image Indicators */}
+          {/* Image Indicators - Lebih besar di mobile */}
           {product.images.length > 1 && !imageError && (
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1 z-10">
               {product.images.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToImage(index)}
-                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
                     index === currentImageIndex
-                      ? "bg-white scale-110"
+                      ? "bg-white scale-125"
                       : "bg-white/50 hover:bg-white/80"
                   }`}
                 />
@@ -526,10 +559,19 @@ const ProductCard = ({
             </div>
           )}
 
+          {/* Swipe Indicator untuk Mobile */}
+          {product.images.length > 1 && !imageError && (
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 sm:hidden">
+              <div className="bg-black/50 text-white px-2 py-1 rounded-full text-xs">
+                Geser untuk lihat foto
+              </div>
+            </div>
+          )}
+
           {/* Favorite Button */}
           <button
             onClick={() => onToggleFavorite(product.id)}
-            className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
+            className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded-full transition-all duration-300 transform hover:scale-110 z-10 ${
               isFavorite
                 ? "bg-[#CA7C83] text-white shadow-lg"
                 : "bg-white text-[#CA7C83] hover:text-[#8B575C] hover:bg-[#F9DADD]"
@@ -543,7 +585,7 @@ const ProductCard = ({
           </button>
 
           {/* Category Badge */}
-          <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-gradient-to-r from-[#CA7C83] to-[#8B575C] text-white px-2 sm:px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+          <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-gradient-to-r from-[#CA7C83] to-[#8B575C] text-white px-2 sm:px-3 py-1 rounded-full text-xs font-semibold shadow-lg z-10">
             {product.category.replace("-", " ").toUpperCase()}
           </div>
         </div>
